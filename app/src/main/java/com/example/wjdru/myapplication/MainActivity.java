@@ -56,7 +56,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (success) {//로그인 성공
                     Toast.makeText(context,"로그인 성공",Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getApplicationContext(), Main2Activity.class);
-                    startActivity(intent);
+                    startActivityForResult(intent,REQUEST_CODE_ANOTHER);
+                    finish();
                 } else {//로그인 실패
                     String errorCode = naverLoginInstance.getLastErrorCode(context).getCode();
                     String errorDesc = naverLoginInstance.getLastErrorDesc(context);
@@ -73,6 +74,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnLogout = (Button)findViewById(R.id.btnlogout);
         btnLogout.setOnClickListener(this);
 
+    }
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+
+        if(requestCode ==REQUEST_CODE_ANOTHER){
+            Toast toast = Toast.makeText(getApplicationContext(), "메소드가 호출됨 : "+ requestCode + "결과 코드 : " + resultCode ,Toast.LENGTH_LONG);
+            toast.show();
+
+         if(resultCode ==RESULT_OK){
+             String name = intent.getExtras().getString("name");
+             toast = Toast.makeText(getApplicationContext(),"응답으로 전달된 name : " +name , Toast.LENGTH_LONG);
+             toast.show();
+         }
+        }
     }
 
     @Override
